@@ -60,4 +60,63 @@ auth.register = async (req, res) => {
     res.send('Congratulation! You have got an account!');
 };
 
+auth.login = async (req, res) => {
+    const { email, password, role } = req.body;
+    if (role == 'student') {
+        try {
+            const student = await (await pool.query(`
+                SELECT * FROM students 
+                WHERE s_email = $1 AND s_password = $2 
+            `, [email, password])).rows;
+            if (student.length > 0) {
+                res.status(200).json({
+                    id: student[0].s_id,
+                    name: student[0].s_name,
+                    password: student[0].s_password,
+                    role: 'student'
+                });
+                return;
+            } else {
+                res.status(200).json({
+                    msg: 'Студент не найден в системе. Пожалуйста, зарегистрируйтесь',
+                    notFound: true
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                msg: 'Ошибка. Попробуйте авторизироваться через некоторое время',
+                err
+            });
+            return;
+        }
+    } else {
+        try {
+            const teacher = await (await pool.query(`
+                SELECT * FROM teachers 
+                WHERE t_email = $1 AND t_password = $2 
+            `, [email, password])).rows;
+            if (teacher.length > 0) {
+                res.status(200).json({
+                    id: teacher[0].t_id,
+                    name: teacher[0].t_name,
+                    password: teacher[0].t_password,
+                    role: 'teacher'
+                });
+                return;
+            } else {
+                res.status(200).json({
+                    msg: 'Преподаватель не найден в системе. Пожалуйста, зарегистрируйтесь',
+                    notFound: true
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                msg: 'Ошибка. Попробуйте авторизироваться через некоторое время',
+                err
+            });
+            return;
+        }
+    }
+};
+
 module.exports = auth;
