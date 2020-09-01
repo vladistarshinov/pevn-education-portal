@@ -3,14 +3,14 @@ CREATE DATABASE educationportal;
 CREATE TABLE teachers (
     t_id SERIAL PRIMARY KEY,
     t_name TEXT NULL NULL,
-    t_email TEXT NOT NULL,
+    t_email TEXT NOT NULL UNIQUE,
     t_password TEXT NOT NULL
 );
 
 CREATE TABLE students (
     s_id SERIAL PRIMARY KEY,
     s_name TEXT NULL NULL,
-    s_email TEXT NOT NULL,
+    s_email TEXT NOT NULL UNIQUE,
     s_password TEXT NOT NULL
 );
 

@@ -18,9 +18,7 @@ app.use(fileUpload({useTempFiles: true}));
 app.use(history());
 
 // Routes
-app.get('/', (req, res) => {
-    res.send('Hello');
-})
+app.use('/', require('./routes/auth.routes'));
 
 // Settings
 app.set('port', process.env.PORT || 3000);
