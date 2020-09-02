@@ -4,7 +4,7 @@
         <v-card>
           <v-card-title>Регистрация</v-card-title>
           <v-card-text>
-            <v-form class="ma-3" ref="registerForm" @submit.prevent="register()">
+            <v-form class="ma-3" ref="registerForm" lazy-validation @submit.prevent="register()">
               <v-text-field 
                 label="Имя" 
                 prepend-icon="mdi-account"
@@ -77,11 +77,13 @@
                     try {
                         const res = await this.axios.post('/register', this.user)
                         this.$refs.registerForm.reset()
+                        sessionStorage.setItem('session', JSON.stringify(res.data))
                         this.alert = {
                             isShow: true,
                             type: 'success',
-                            message: res.data.msg
+                            message: 'Вы успешно зарегистрированы в системе'
                         }
+                        this.$router.push('/')
                     } catch (err) {
                         this.alert = {
                             isShow: true,

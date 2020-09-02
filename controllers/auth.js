@@ -11,8 +11,10 @@ auth.register = async (req, res) => {
                 [name, email, password]
             );
             res.status(200).json({
-                msg: 'Вы успешно зарегистрированы в системе',
-                student: { name, email, password }
+                name, 
+                email, 
+                password, 
+                role
             });
             return;
         } catch (err) {
@@ -37,8 +39,10 @@ auth.register = async (req, res) => {
                 [name, email, password]
             );
             res.status(200).json({
-                msg: 'Вы успешно зарегистрированы в системе',
-                teacher: { name, email, password }
+                name, 
+                email, 
+                password, 
+                role
             });
             return;
         } catch (err) {
@@ -57,7 +61,7 @@ auth.register = async (req, res) => {
             }
         }
     }
-    res.send('Congratulation! You have got an account!');
+    res.send('Поздравляем с успешной регистрацией!');
 };
 
 auth.login = async (req, res) => {
@@ -75,6 +79,7 @@ auth.login = async (req, res) => {
                 res.status(200).json({
                     id: student[0].s_id,
                     name: student[0].s_name,
+                    email: student[0].s_email,
                     password: student[0].s_password,
                     role: 'student'
                 });
@@ -83,6 +88,7 @@ auth.login = async (req, res) => {
                 res.status(200).json({
                     id: teacher[0].t_id,
                     name: teacher[0].t_name,
+                    email: teacher[0].t_email,
                     password: teacher[0].t_password,
                     role: 'teacher'
                 });

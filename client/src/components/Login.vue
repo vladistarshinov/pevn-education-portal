@@ -4,7 +4,7 @@
         <v-card>
           <v-card-title>Вход</v-card-title>
           <v-card-text>
-            <v-form class="ma-3" ref="loginForm" @submit.prevent="login()">
+            <v-form class="ma-3" ref="loginForm" lazy-validation @submit.prevent="login()">
               <v-text-field 
                 label="E-mail" 
                 prepend-icon="mdi-email"
@@ -68,6 +68,7 @@
                                 type: 'success',
                                 message: 'Добро пожаловать'
                             }
+                            this.$router.push('/')
                         }
                     } catch (err) {
                         this.alert = {
