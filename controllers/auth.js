@@ -61,12 +61,15 @@ auth.register = async (req, res) => {
 };
 
 auth.login = async (req, res) => {
-    const { email, password, role } = req.body;
-    if (role == 'student') {
+    const { email, password } = req.body;
         try {
             const student = await (await pool.query(`
                 SELECT * FROM students 
-                WHERE s_email = $1 AND s_password = $2 
+                WHERE s_email = $1 AND s_password = $2
+            `, [email, password])).rows;
+            const teacher = await (await pool.query(`
+                SELECT * FROM teachers 
+                WHERE t_email = $1 AND t_password = $2
             `, [email, password])).rows;
             if (student.length > 0) {
                 res.status(200).json({
@@ -76,26 +79,7 @@ auth.login = async (req, res) => {
                     role: 'student'
                 });
                 return;
-            } else {
-                res.status(200).json({
-                    msg: 'Студент не найден в системе. Пожалуйста, зарегистрируйтесь',
-                    notFound: true
-                });
-            }
-        } catch (err) {
-            res.status(500).json({
-                msg: 'Ошибка. Попробуйте авторизироваться через некоторое время',
-                err
-            });
-            return;
-        }
-    } else {
-        try {
-            const teacher = await (await pool.query(`
-                SELECT * FROM teachers 
-                WHERE t_email = $1 AND t_password = $2 
-            `, [email, password])).rows;
-            if (teacher.length > 0) {
+            } else if (teacher.length > 0) {
                 res.status(200).json({
                     id: teacher[0].t_id,
                     name: teacher[0].t_name,
@@ -105,7 +89,7 @@ auth.login = async (req, res) => {
                 return;
             } else {
                 res.status(200).json({
-                    msg: 'Преподаватель не найден в системе. Пожалуйста, зарегистрируйтесь',
+                    msg: 'Пользователь не найден в системе. Пожалуйста, зарегистрируйтесь',
                     notFound: true
                 });
             }
@@ -116,7 +100,6 @@ auth.login = async (req, res) => {
             });
             return;
         }
-    }
 };
 
 module.exports = auth;

@@ -20,10 +20,6 @@
                 v-model="user.password"
               >
               </v-text-field>
-              <v-radio-group row :rules="roleRules" v-model="user.role">
-                <v-radio label="Студент" value="student"></v-radio>
-                <v-radio label="Преподаватель" value="teacher"></v-radio>
-              </v-radio-group>
               <v-btn block class="primary mt-3" type="submit">Вход</v-btn>
             </v-form>
           </v-card-text>
@@ -43,13 +39,9 @@
                     v => !!v || 'Введите пароль',
                     v => (v && v.length > 5) || 'Пароль должен содержать не менее 6 символов'
                 ],
-                 roleRules: [
-                    v => !!v || 'Выберите свой статус'
-                ],
                 user: {
                     email: '',
-                    password: '',
-                    role: ''
+                    password: ''
                 },
                 alert: {
                     isShow: false,
