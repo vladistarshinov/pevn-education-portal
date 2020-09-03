@@ -63,11 +63,6 @@
                             }
                         } else {
                             sessionStorage.setItem('session', JSON.stringify(res.data))
-                            this.alert = {
-                                isShow: true,
-                                type: 'success',
-                                message: 'Добро пожаловать'
-                            }
                             this.$router.push('/')
                         }
                     } catch (err) {

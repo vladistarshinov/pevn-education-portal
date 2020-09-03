@@ -78,11 +78,6 @@
                         const res = await this.axios.post('/register', this.user)
                         this.$refs.registerForm.reset()
                         sessionStorage.setItem('session', JSON.stringify(res.data))
-                        this.alert = {
-                            isShow: true,
-                            type: 'success',
-                            message: 'Вы успешно зарегистрированы в системе'
-                        }
                         this.$router.push('/')
                     } catch (err) {
                         this.alert = {

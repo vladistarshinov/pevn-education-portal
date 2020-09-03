@@ -75,6 +75,13 @@ auth.login = async (req, res) => {
                 SELECT * FROM teachers 
                 WHERE t_email = $1 AND t_password = $2
             `, [email, password])).rows;
+            const hasGotEmail = await (await pool.query(`
+                SELECT * FROM students 
+                WHERE s_email = $1
+                UNION
+                SELECT * FROM teachers 
+                WHERE t_email = $1
+            `, [email])).rows;
             if (student.length > 0) {
                 res.status(200).json({
                     id: student[0].s_id,
@@ -93,12 +100,18 @@ auth.login = async (req, res) => {
                     role: 'teacher'
                 });
                 return;
-            } else {
+            } else if (hasGotEmail.length == 0) {
                 res.status(200).json({
                     msg: 'Пользователь не найден в системе. Пожалуйста, зарегистрируйтесь',
                     notFound: true
                 });
-            }
+                return;
+            } else {
+                res.status(500).json({
+                    msg: 'Неверный пароль'
+                });
+                return;
+            } 
         } catch (err) {
             res.status(500).json({
                 msg: 'Ошибка. Попробуйте авторизироваться через некоторое время',
