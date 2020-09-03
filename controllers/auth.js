@@ -7,7 +7,7 @@ auth.register = async (req, res) => {
     if (role == 'student') {
         try {
             await pool.query(
-                "INSERT INTO students (s_name, s_email, s_password) VALUES ($1, $2, $3)", 
+                'INSERT INTO students (s_name, s_email, s_password) VALUES ($1, $2, $3)', 
                 [name, email, password]
             );
             res.status(200).json({
@@ -35,7 +35,7 @@ auth.register = async (req, res) => {
     } else {
         try {
             await pool.query(
-                "INSERT INTO teachers (t_name, t_email, t_password) VALUES ($1, $2, $3)", 
+                'INSERT INTO teachers (t_name, t_email, t_password) VALUES ($1, $2, $3)', 
                 [name, email, password]
             );
             res.status(200).json({

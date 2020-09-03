@@ -13,12 +13,15 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 app.use(morgan('tiny'));
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload({useTempFiles: true}));
-app.use(history());
 
 // Routes
 app.use('/', require('./routes/auth.routes'));
+app.use('/teacher', require('./routes/teachersAccount.routes'));
+
+// Middlewares for Vue
+app.use(history());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Settings
 app.set('port', process.env.PORT || 3000);
