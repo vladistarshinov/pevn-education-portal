@@ -17,7 +17,7 @@ app.use(fileUpload({useTempFiles: true}));
 
 // Routes
 app.use('/', require('./routes/auth.routes'));
-app.use('/teacher', require('./routes/teachersAccount.routes'));
+app.use('/teacher', require('./routes/teachersCourses.routes'));
 
 // Middlewares for Vue
 app.use(history());
