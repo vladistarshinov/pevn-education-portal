@@ -3,7 +3,8 @@
         <v-app-bar app dark color="primary" v-if="isAuth">
             <v-toolbar-title>ЭОИС</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click.prevent="logout()">
+            <v-btn class="primary" @click.prevent="logout()">
+                <span class="mr-3">Выйти</span>
                 <v-icon>mdi-export</v-icon>
             </v-btn>
         </v-app-bar>

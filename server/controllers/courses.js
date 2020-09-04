@@ -1,8 +1,8 @@
 import pool from '../db/keys';
 
-const teachersCourses = {};
+const courses = {};
 
-teachersCourses.getCourses = async (req, res) => {
+courses.getCourses = async (req, res) => {
     const {id} = req.body;
     try {
         const courses = await (await pool.query(`
@@ -20,7 +20,7 @@ teachersCourses.getCourses = async (req, res) => {
     }
 };
 
-teachersCourses.createCourse = async (req, res) => {
+courses.createCourse = async (req, res) => {
     const {id, c_name, c_description} = req.body;
     try {
         await pool.query(
@@ -41,7 +41,7 @@ teachersCourses.createCourse = async (req, res) => {
     }
 };
 
-teachersCourses.readCourse = async (req, res) => {
+courses.readCourse = async (req, res) => {
     const id = req.params.c_id;
     try {
         const course = await (await pool.query(`
@@ -61,7 +61,7 @@ teachersCourses.readCourse = async (req, res) => {
     }
 };
 
-teachersCourses.updateCourse = async (req, res) => {
+courses.updateCourse = async (req, res) => {
     const id = req.params.c_id;
     const {c_name, c_description} = req.body;
     try {
@@ -83,7 +83,7 @@ teachersCourses.updateCourse = async (req, res) => {
     }
 };
 
-teachersCourses.deleteCourse = async (req, res) => {
+courses.deleteCourse = async (req, res) => {
     const id = req.params.c_id;
     try {
         await pool.query(`
@@ -103,4 +103,4 @@ teachersCourses.deleteCourse = async (req, res) => {
     }
 };
 
-module.exports = teachersCourses;
+module.exports = courses;
