@@ -27,9 +27,14 @@ courses.createCourse = async (req, res) => {
             'INSERT INTO courses (ct_id, c_name, c_description) VALUES ($1, $2, $3)',
             [id, c_name, c_description]
         );
+        // Возвращает добавленный только что курс (для возвращения id (/course/:c_id) для редактирования и удаления без перезагрузки страницы)
+        const course = await (await pool.query(`
+            SELECT * FROM courses
+            ORDER BY c_id DESC LIMIT 1
+        `)).rows[0];
         res.status(200).json({
             msg: 'Курс успешно добавлен',
-            course: {id, c_name, c_description}
+            course
         });
         return;
     } catch (err) {

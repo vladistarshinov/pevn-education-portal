@@ -57,7 +57,7 @@ export default {
     if (authUser) {
       this.alert = {
           isShow: true,
-          type: 'warning',
+          type: 'info',
           message: 'Вы уже авторизированы в системе'
       }
       this.isAuth = true

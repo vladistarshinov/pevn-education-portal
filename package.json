@@ -6,7 +6,7 @@
     "server": "cd server/ && npm run start",
     "client": "cd client/ && npm run serve",
     "install_modules": "npm i && cd client/ && npm i && cd ../server && npm i && cd ../",
-    "dev_app": "npm-run-all --parallel server client"
+    "app": "npm-run-all --parallel server client"
   },
   "main": "app.js",
   "devDependencies": {
