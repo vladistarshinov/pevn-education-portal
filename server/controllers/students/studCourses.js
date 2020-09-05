@@ -26,9 +26,12 @@ studCourses.getMyCourses = async (req, res) => {
         const courses = await (await pool.query(`
             SELECT * 
             FROM teacherscourses
-            JOIN
-            studentscourses ON cc_id = c_id
-        `)).rows;
+            JOIN (
+                SELECT * 
+                FROM studentscourses
+                WHERE sc_id = $1
+            ) AS S ON cc_id = c_id
+        `, [id])).rows;
         res.status(200).json(courses);
     } catch (err) {
         res.status(500).json({
@@ -40,13 +43,13 @@ studCourses.getMyCourses = async (req, res) => {
 }; 
 
 studCourses.joinCourse = async (req, res) => {
-    const id = req.body.id;
+    const sc_id = req.body.id;
     const c_id = req.params.c_id;
     try {
         await pool.query(`
             INSERT INTO studentscourses 
             VALUES ($1, $2)
-        `, [id, c_id]);
+        `, [sc_id, c_id]);
         res.status(200).json({
             msg: 'Вы добавили курс',
             course: {c_id}

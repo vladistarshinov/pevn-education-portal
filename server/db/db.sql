@@ -2,14 +2,14 @@ CREATE DATABASE educationportal;
 
 CREATE TABLE teachers (
     t_id SERIAL PRIMARY KEY,
-    t_name TEXT NULL NULL,
+    t_name TEXT NOT NULL,
     t_email TEXT NOT NULL UNIQUE,
     t_password TEXT NOT NULL
 );
 
 CREATE TABLE students (
     s_id SERIAL PRIMARY KEY,
-    s_name TEXT NULL NULL,
+    s_name TEXT NOT NULL,
     s_email TEXT NOT NULL UNIQUE,
     s_password TEXT NOT NULL
 );
@@ -17,21 +17,21 @@ CREATE TABLE students (
 CREATE TABLE courses (
     c_id SERIAL PRIMARY KEY,
     ct_id INTEGER REFERENCES teachers(t_id),
-    c_name TEXT NULL NULL,
+    c_name TEXT NOT NULL,
     c_description TEXT NOT NULL
 );
 
 CREATE TABLE tasks (
     h_id SERIAL PRIMARY KEY,
-    cc_id INTEGER NULL NULL REFERENCES courses(c_id),
-    h_name TEXT NULL NULL,
+    cc_id INTEGER NOT NULL REFERENCES courses(c_id),
+    h_name TEXT NOT NULL,
     h_description TEXT,
-    h_file TEXT NULL NULL
+    h_file TEXT NOT NULL
 );
 
 CREATE TABLE studentscourses (
-    sc_id INTEGER NULL NULL REFERENCES students(s_id),
-    cc_id INTEGER NULL NULL REFERENCES courses(c_id)
+    sc_id INTEGER NOT NULL REFERENCES students(s_id),
+    cc_id INTEGER NOT NULL REFERENCES courses(c_id)
 );
 
 /* CREATE VIEW teacherscourses
