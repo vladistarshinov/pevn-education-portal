@@ -34,6 +34,12 @@ CREATE TABLE studentscourses (
     cc_id INTEGER NULL NULL REFERENCES courses(c_id)
 );
 
+/* CREATE VIEW teacherscourses
+AS
+    SELECT * FROM courses 
+        JOIN
+        (SELECT t_id, t_name, t_email FROM teachers) AS t ON ct_id = t_id; */
+
 CREATE TABLE delivery (
     d_id SERIAL PRIMARY KEY,
     dh_id INTEGER REFERENCES tasks(h_id),

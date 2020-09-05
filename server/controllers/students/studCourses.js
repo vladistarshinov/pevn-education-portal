@@ -4,8 +4,6 @@ const studCourses = {};
 
 studCourses.getCourses = async (req, res) => {
     try {
-        // SELECT * FROM courses JOIN teachers ON ct_id = t_id 
-        // выведет все данные о курсе и об учителе курса с паролем, что нам не нужно
         const courses = await (await pool.query(`
             SELECT * FROM courses 
             JOIN
@@ -16,6 +14,47 @@ studCourses.getCourses = async (req, res) => {
     } catch (err) {
         res.status(500).json({
             msg: 'Ошибка при загрузке курсов. Перезагрузите страницу',
+            err
+        });
+        return;
+    }
+};
+
+studCourses.getMyCourses = async (req, res) => {
+    const id = req.body.id;
+    try {
+        const courses = await (await pool.query(`
+            SELECT * 
+            FROM teacherscourses
+            JOIN
+            studentscourses ON cc_id = c_id
+        `)).rows;
+        res.status(200).json(courses);
+    } catch (err) {
+        res.status(500).json({
+            msg: 'Ошибка при загрузке курсов. Перезагрузите страницу',
+            err
+        });
+        return;
+    }
+}; 
+
+studCourses.joinCourse = async (req, res) => {
+    const id = req.body.id;
+    const c_id = req.params.c_id;
+    try {
+        await pool.query(`
+            INSERT INTO studentscourses 
+            VALUES ($1, $2)
+        `, [id, c_id]);
+        res.status(200).json({
+            msg: 'Вы добавили курс',
+            course: {c_id}
+        });
+        return;
+    } catch (err) {
+        res.status(500).json({
+            msg: 'Ошибка при вступлении в курс. Перезагрузите страницу',
             err
         });
         return;

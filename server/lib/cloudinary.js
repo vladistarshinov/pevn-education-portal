@@ -9,9 +9,8 @@ cloudinary.config({
 module.exports = async (file) => {
     try {
         const res = await cloudinary.uploader.upload(file);
-        //return res.url;
         return res.secure_url;
     } catch (err) {
-        return err
+        return err;
     }
 }
