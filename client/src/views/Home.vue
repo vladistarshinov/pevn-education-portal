@@ -3,6 +3,7 @@
         <v-app-bar app dark color="primary" v-if="isAuth">
             <v-toolbar-title>ЭОИС</v-toolbar-title>
             <v-spacer></v-spacer>
+            <router-link to="/teacher/my-courses"><v-btn class="primary">Все курсы</v-btn></router-link>
             <v-btn class="primary" @click.prevent="logout()">
                 <span class="mr-3">Выйти</span>
                 <v-icon>mdi-export</v-icon>

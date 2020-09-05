@@ -11,8 +11,12 @@
                 <v-card-title>{{course.c_name}}</v-card-title>
                 <v-card-subtitle>{{course.c_description}}</v-card-subtitle>
                 <v-card-actions>
-                    <v-btn @click.prevent="readCourse(course.c_id)" color="blue" small dark fab><v-icon>mdi-pencil</v-icon></v-btn>
-                    <v-btn @click.prevent="deleteCourse(course.c_id)" color="red" small dark fab><v-icon>mdi-delete</v-icon></v-btn>
+                    <v-btn @click.prevent="readCourse(course.c_id)" color="blue" small dark fab>
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn @click.prevent="deleteCourse(course.c_id)" color="red" small dark fab>
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-row>
@@ -61,7 +65,9 @@
                         ></v-textarea>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click.prevent="isShowEditDialog = !isShowEditDialog">Закрыть</v-btn>
+                            <v-btn color="blue darken-1" text 
+                                @click.prevent="isShowEditDialog = !isShowEditDialog"
+                            >Закрыть</v-btn>
                             <v-btn color="blue darken-1" type="submit" text>Обновить</v-btn>
                         </v-card-actions>
                     </v-form>
@@ -186,7 +192,6 @@
             async deleteCourse (c_id) {
                 try {
                     const res = await this.axios.delete(`/teacher/course/${c_id}`)
-                    // console.log(res.data)
                     const index = this.coursesList.findIndex(course => course.c_id === c_id)
                     this.coursesList.splice(index, 1)
                     this.alert = {
