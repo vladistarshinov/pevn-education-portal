@@ -17,9 +17,12 @@ app.use(fileUpload({useTempFiles: true}));
 
 // Routes
 app.use('/', require('./routes/auth.routes'));
-app.use('/teacher', require('./routes/courses.routes'));
-app.use('/teacher', require('./routes/tasks.routes'));
-/* app.use('/teacher', require('./routes/deliveries.routes')); */
+
+app.use('/teacher', require('./routes/teachers/courses.routes'));
+app.use('/teacher', require('./routes/teachers/tasks.routes'));
+app.use('/teacher', require('./routes/teachers/deliveries.routes'));
+
+app.use('/student', require('./routes/students/studCourses.routes'));
 
 // Middlewares for Vue
 app.use(history());

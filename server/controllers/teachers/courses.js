@@ -1,4 +1,4 @@
-import pool from '../db/keys';
+import pool from '../../db/keys';
 
 const courses = {};
 

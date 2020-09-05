@@ -1,5 +1,5 @@
-import pool from '../db/keys';
-import cloudinary from '../lib/cloudinary';
+import pool from '../../db/keys';
+import cloudinary from '../../lib/cloudinary';
 
 const tasks = {};
 

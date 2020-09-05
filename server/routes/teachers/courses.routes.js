@@ -1,5 +1,5 @@
 import express from 'express';
-import courses from '../controllers/courses';
+import courses from '../../controllers/teachers/courses';
 
 const router = express.Router();
 

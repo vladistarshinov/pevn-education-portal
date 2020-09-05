@@ -1,5 +1,5 @@
 import express from 'express';
-import tasks from '../controllers/tasks';
+import tasks from '../../controllers/teachers/tasks';
 
 const router = express.Router();
 
