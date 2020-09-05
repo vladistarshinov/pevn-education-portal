@@ -8,6 +8,9 @@ deliveries.getDeliveries = async (req, res) => {
     try {
         const deliveries = await (await pool.query(`
             SELECT * FROM delivery
+            JOIN (
+                SELECT * FROM students
+            ) AS S ON ds_id = s_id
             WHERE dh_id = $1
         `, [h_id])).rows;
         res.status(200).json(deliveries);

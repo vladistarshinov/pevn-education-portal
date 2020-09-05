@@ -23,6 +23,8 @@ app.use('/teacher', require('./routes/teachers/tasks.routes'));
 app.use('/teacher', require('./routes/teachers/deliveries.routes'));
 
 app.use('/student', require('./routes/students/studCourses.routes'));
+app.use('/student', require('./routes/students/studTasks.routes'));
+app.use('/student', require('./routes/students/studDeliveries.routes'));
 
 // Middlewares for Vue
 app.use(history());
