@@ -1,41 +1,37 @@
 <template>
     <v-container>
-        <v-app-bar app dark color="primary" v-if="isAuth">
-            <v-toolbar-title>ЭОИС</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <router-link to="/teacher/my-courses"><v-btn class="primary">Все курсы</v-btn></router-link>
-            <v-btn class="primary" @click.prevent="logout()">
-                <span class="mr-3">Выйти</span>
-                <v-icon>mdi-export</v-icon>
-            </v-btn>
-        </v-app-bar>
-        <h3 v-else>Вы не авторизированы</h3>
+        <TeacherNavbar :t_name="info.name" />
+        <h2 class="font-weight-light text-center">Добро пожаловать на портал с электронными курсами</h2>
     </v-container>
 </template>
 
 <script>
-    export default {
-        name: 'Home',
-        data () {
-            return {
-                isAuth: false
-            }
-        },
-        created () {
-            if (sessionStorage.getItem('session')) {
-                this.isAuth = true
-            } else {
-                this.isAuth = false
-                this.$router.push('/auth')
-            }
-        },
-        methods: {
-            logout () {
-                sessionStorage.removeItem('session')
-                this.$router.push('/auth')
-            }
+import TeacherNavbar from '@/components/TeacherNavbar'
+export default {
+    name: 'Home',
+    data () {
+        return {
+            info: {},
+            teacherAuth: false,
+            studentAuth: false
         }
+    },
+    created () {
+        const info = JSON.parse(sessionStorage.getItem('session'))
+        if (info.role === 'teacher') {
+            this.teacherAuth = true
+            this.info.name = info.name
+        } else if (info.role === 'student') {
+            this.studentAuth = true
+            this.info.name = info.name
+        } else {
+            this.$router.push('/auth')
+        }
+    },
+    components: {
+        TeacherNavbar
     }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <TeacherNavbar :t_name="teacher.name" />
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Мои курсы</h1>
         <v-row justify="center">
@@ -17,6 +18,8 @@
                     <v-btn @click.prevent="deleteCourse(course.c_id)" color="red" small dark fab>
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="purple" @click.prevent="$router.push(`/teacher/tasks/${course.c_id}`)">Открыть</v-btn>
                 </v-card-actions>
             </v-card>
         </v-row>
@@ -81,134 +84,138 @@
 </template>
 
 <script>
-    export default {
-        name: 'Courses',
-        data () {
-            return {
-                teacher: {},
-                coursesList: [],
-                addingCourse: {
-                    c_name: '',
-                    c_description: ''
-                },
-                editingCourse: {
-                    c_name: '',
-                    c_description: ''
-                },
-                nameRules: [
-                    v => !!v || 'Введите название курса'
-                ],
-                descriptionRules: [
-                    v => !!v || 'Введите описание курса'
-                ],
-                isShowAddDialog: false,
-                isShowEditDialog: false,
-                alert: {
-                    isShow: false,
-                    message: ''
-                }
+import TeacherNavbar from '@/components/TeacherNavbar'
+export default {
+    name: 'Courses',
+    data () {
+        return {
+            teacher: {},
+            coursesList: [],
+            addingCourse: {
+                c_name: '',
+                c_description: ''
+            },
+            editingCourse: {
+                c_name: '',
+                c_description: ''
+            },
+            nameRules: [
+                v => !!v || 'Введите название курса'
+            ],
+            descriptionRules: [
+                v => !!v || 'Введите описание курса'
+            ],
+            isShowAddDialog: false,
+            isShowEditDialog: false,
+            alert: {
+                isShow: false,
+                message: ''
             }
-        },
-        async created () {
-            this.teacher = JSON.parse(sessionStorage.getItem('session'))
-            if (this.teacher == 'null') {
-                this.$router.push('/auth')
-            } else if (this.teacher.role !== 'teacher') {
-                this.$router.push('/profile')
-            } else {
-                try {
-                    const res = await this.axios.post('/teacher/my-courses', this.teacher)
-                    this.coursesList = res.data
-                } catch (err) {
-                    this.alert = {
-                        isShow: true,
-                        type: 'error',
-                        message: err.response.data.msg
-                    }
-                }
-            }
-        },
-        methods: {
-            async addCourse () {
-                let valid = this.$refs.addForm.validate()
-                if (valid) {
-                    try {
-                        this.addingCourse.id = this.teacher.id
-                        const res = await this.axios.post('/teacher/course', this.addingCourse)
-                        this.coursesList.push(res.data.course)
-                        this.$refs.addForm.reset()
-                        this.isShowAddDialog = false
-                        this.alert = {
-                            isShow: true,
-                            type: 'success',
-                            message: res.data.msg
-                        }
-                    } catch (err) {
-                        this.isShowAddDialog = false
-                        this.alert = {
-                            isShow: true,
-                            type: 'error',
-                            message: err.response.data.msg
-                        }
-                    }
-                }
-            },
-            async readCourse (c_id) {
-                try {
-                    const res = await this.axios.get(`/teacher/course/${c_id}`)
-                    this.editingCourse = res.data.course
-                    this.isShowEditDialog = true
-                } catch (err) {
-                    this.alert = {
-                        isShow: true,
-                        type: 'error',
-                        message: err.response.data.msg
-                    }
-                }
-            },
-            async editCourse () {
-                let valid = this.$refs.editForm.validate()
-                if (valid) {
-                    try {
-                        const res = await this.axios.put(`/teacher/course/${this.editingCourse.c_id}`, this.editingCourse)
-                        const index = this.coursesList.findIndex(course => course.c_id === this.editingCourse.c_id)
-                        this.coursesList[index] = this.editingCourse
-                        this.isShowEditDialog = false
-                        this.alert = {
-                            isShow: true,
-                            type: 'success',
-                            message: res.data.msg
-                        }
-                    } catch (err) {
-                        this.isShowEditDialog = false
-                        this.alert = {
-                            isShow: true,
-                            type: 'error',
-                            message: err.response.data.msg
-                        }
-                    }
-                }
-            },
-            async deleteCourse (c_id) {
-                try {
-                    const res = await this.axios.delete(`/teacher/course/${c_id}`)
-                    const index = this.coursesList.findIndex(course => course.c_id === c_id)
-                    this.coursesList.splice(index, 1)
-                    this.alert = {
-                        isShow: true,
-                        type: 'info',
-                        message: res.data.msg
-                    }
-                } catch (err) {
-                    this.alert = {
-                        isShow: true,
-                        type: 'error',
-                        message: err.response.data.msg
-                    }
+        }
+    },
+    async created () {
+        this.teacher = JSON.parse(sessionStorage.getItem('session'))
+        if (this.teacher == null) {
+            this.$router.push('/auth')
+        } else if (this.teacher.role !== 'teacher') {
+            this.$router.push('/profile')
+        } else {
+            try {
+                const res = await this.axios.post('/teacher/my-courses', this.teacher)
+                this.coursesList = res.data
+            } catch (err) {
+                this.alert = {
+                    isShow: true,
+                    type: 'error',
+                    message: err.response.data.msg
                 }
             }
         }
+    },
+    methods: {
+        async addCourse () {
+            let valid = this.$refs.addForm.validate()
+            if (valid) {
+                try {
+                    this.addingCourse.id = this.teacher.id
+                    const res = await this.axios.post('/teacher/course', this.addingCourse)
+                    this.coursesList.push(res.data.course)
+                    this.$refs.addForm.reset()
+                    this.isShowAddDialog = false
+                    this.alert = {
+                        isShow: true,
+                        type: 'success',
+                        message: res.data.msg
+                    }
+                } catch (err) {
+                    this.isShowAddDialog = false
+                    this.alert = {
+                        isShow: true,
+                        type: 'error',
+                        message: err.response.data.msg
+                    }
+                }
+            }
+        },
+        async readCourse (c_id) {
+            try {
+                const res = await this.axios.get(`/teacher/course/${c_id}`)
+                this.editingCourse = res.data.course
+                this.isShowEditDialog = true
+            } catch (err) {
+                this.alert = {
+                    isShow: true,
+                    type: 'error',
+                    message: err.response.data.msg
+                }
+            }
+        },
+        async editCourse () {
+            let valid = this.$refs.editForm.validate()
+            if (valid) {
+                try {
+                    const res = await this.axios.put(`/teacher/course/${this.editingCourse.c_id}`, this.editingCourse)
+                    const index = this.coursesList.findIndex(course => course.c_id === this.editingCourse.c_id)
+                    this.coursesList[index] = this.editingCourse
+                    this.isShowEditDialog = false
+                    this.alert = {
+                        isShow: true,
+                        type: 'success',
+                        message: res.data.msg
+                    }
+                } catch (err) {
+                    this.isShowEditDialog = false
+                    this.alert = {
+                        isShow: true,
+                        type: 'error',
+                        message: err.response.data.msg
+                    }
+                }
+            }
+        },
+        async deleteCourse (c_id) {
+            try {
+                const res = await this.axios.delete(`/teacher/course/${c_id}`)
+                const index = this.coursesList.findIndex(course => course.c_id === c_id)
+                this.coursesList.splice(index, 1)
+                this.alert = {
+                    isShow: true,
+                    type: 'info',
+                    message: res.data.msg
+                }
+            } catch (err) {
+                this.alert = {
+                    isShow: true,
+                    type: 'error',
+                    message: err.response.data.msg
+                }
+            }
+        }
+    },
+    components: {
+        TeacherNavbar
     }
+}
 </script>
 
 <style lang="scss" scoped>

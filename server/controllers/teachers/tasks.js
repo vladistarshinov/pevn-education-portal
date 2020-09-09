@@ -6,15 +6,19 @@ const tasks = {};
 tasks.createTask = async (req, res) => {
     const c_id = req.params.c_id;
     const {h_name, h_description} = req.body;
-    const file = await cloudinary(req.files.h_file.tempFilePath);
+    const h_file = await cloudinary(req.files.h_file.tempFilePath);
     try {
         await pool.query(`
             INSERT INTO tasks (cc_id, h_name, h_description, h_file)
             VALUES ($1, $2, $3, $4)
-        `, [c_id, h_name, h_description, file]);
+        `, [c_id, h_name, h_description, h_file]);
+        const task = await (await pool.query(`
+            SELECT * FROM tasks
+            ORDER BY h_id DESC LIMIT 1
+        `)).rows[0];
         res.status(200).json({
             msg: 'Задание успешно создано',
-            task: {h_name, h_description, file}
+            task: {h_name, h_description, h_file}
         });
         return;
     } catch (err) {
