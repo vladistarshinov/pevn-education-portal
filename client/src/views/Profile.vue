@@ -1,6 +1,7 @@
 <template>
     <v-container>
         <TeacherNavbar v-if="user.role=='teacher'" :t_name="user.name" />
+        <StudentNavbar v-if="user.role=='student'" :s_name="user.name" />
         <v-row justify="center">
             <v-col md="6" sm="6">
                 <v-card>
@@ -19,6 +20,7 @@
 
 <script>
 import TeacherNavbar from '@/components/TeacherNavbar'
+import StudentNavbar from '@/components/StudentNavbar'
 export default {
     name: 'Profile',
     data () {
@@ -33,11 +35,12 @@ export default {
     created () {
         this.user = JSON.parse(sessionStorage.getItem('session'))
         if (!this.user) {
-            this.$router.push('/')
+            this.$router.push('/auth')
         }
     },
     components: {
-        TeacherNavbar
+        TeacherNavbar,
+        StudentNavbar
     }
 }
 </script>

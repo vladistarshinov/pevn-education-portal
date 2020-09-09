@@ -4,10 +4,11 @@
             <router-link to="/" class="mr-3"><v-icon>mdi-image-filter-drama</v-icon></router-link>
             <v-toolbar-title>ЭОИС</v-toolbar-title>
             <v-spacer></v-spacer>   
-            <v-btn text to="/teacher/my-courses">Мои курсы</v-btn>   
+            <v-btn text to="/student/courses">Все курсы</v-btn>   
+            <v-btn text to="/student/my-courses">Moи курсы</v-btn> 
             <v-menu offset-y="">
                 <template v-slot:activator="{ attrs, on }">
-                    <v-btn text v-bind="attrs" v-on="on">{{t_name}}</v-btn>
+                    <v-btn text v-bind="attrs" v-on="on">{{s_name}}</v-btn>
                 </template>
                 <v-list>
                     <v-list-item to="/profile">
@@ -32,7 +33,7 @@
             }
         },
         created () {
-            if (sessionStorage.getItem('session') && JSON.parse(sessionStorage.getItem('session')).role === 'teacher') {
+            if (sessionStorage.getItem('session') && JSON.parse(sessionStorage.getItem('session')).role === 'student') {
                 this.isAuth = true
             } else {
                 this.isAuth = false
@@ -45,7 +46,7 @@
                 this.$router.push('/auth')
             }
         },
-        props: ['t_name']
+        props: ['s_name']
     }
 </script>
 

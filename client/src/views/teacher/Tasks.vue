@@ -152,7 +152,6 @@ export default {
             let valid = this.$refs.addtaskForm.validate()
             if (valid) {
                 try {
-                    // создаем экземпляр из-за несособности принять объект по URL
                     const newTask = new FormData()
                     newTask.append('h_name', this.addingTask.h_name)
                     newTask.append('h_description', this.addingTask.h_description)

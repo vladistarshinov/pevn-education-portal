@@ -22,12 +22,17 @@ Vue.use(VueRouter)
   {
     path: '/teacher/my-courses',
     name: 'Courses',
-    component: () => import(/* webpackChunkName: "Courses" */ '../views/Courses.vue')
+    component: () => import(/* webpackChunkName: "Courses" */ '../views/teacher/Courses.vue')
   },
   {
     path: '/teacher/tasks/:c_id',
     name: 'Tasks',
-    component: () => import(/* webpackChunkName: "Tasks" */ '../views/Tasks.vue')
+    component: () => import(/* webpackChunkName: "Tasks" */ '../views/teacher/Tasks.vue')
+  },
+  {
+    path: '/student/courses',
+    name: 'StudCourses',
+    component: () => import(/* webpackChunkName: "Courses" */ '../views/student/Courses.vue')
   }
 ]
 

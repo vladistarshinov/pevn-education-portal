@@ -3,11 +3,16 @@ import pool from '../../db/keys';
 const studCourses = {};
 
 studCourses.getCourses = async (req, res) => {
+    const id = req.body.id;
     try {
+        // Оставить только те курсы, в которые еще не вступил студент
         const courses = await (await pool.query(`
-            SELECT * FROM courses 
-            JOIN
-            (SELECT t_id, t_name, t_email FROM teachers) AS t ON ct_id = t_id
+            SELECT * FROM teacherscourses
+            LEFT JOIN (
+                SELECT * FROM studentscourses
+                WHERE sc_id = 1
+             ) AS S ON cc_id = c_id
+             WHERE cc_id IS NULL
         `)).rows;
         res.status(200).json(courses);
         return;
