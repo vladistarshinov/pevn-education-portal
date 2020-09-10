@@ -1,6 +1,7 @@
 <template>
     <v-container>
         <StudentNavbar :s_name="student.name" />
+        <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Мои курсы</h1>
         <v-row justify="center">
             <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
@@ -21,7 +22,9 @@
                 <v-spacer></v-spacer>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text dark color="purple">Открыть</v-btn>
+                    <v-btn text dark color="purple" 
+                        @click.prevent="$router.push(`/student/tasks/${course.c_id}`)"
+                    >Открыть</v-btn>
                 </v-card-actions>
             </v-card>
         </v-row>
@@ -53,7 +56,11 @@ export default {
                     const res = await this.axios.post('/student/my-courses', this.student)
                     this.coursesList = res.data
                 } catch (err) {
-
+                    this.alert = {
+                        isShow: true,
+                        type: 'error',
+                        message: err.response.data.msg
+                    }
                 }
             }
     },

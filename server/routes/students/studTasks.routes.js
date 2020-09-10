@@ -3,6 +3,6 @@ import studTasks from '../../controllers/students/studTasks';
 
 const router = express.Router();
 
-router.get('/tasks/:c_id', studTasks.getTasks);
+router.get('/tasks/:c_id/:id', studTasks.getTasks);
 
 module.exports = router;

@@ -38,6 +38,11 @@ Vue.use(VueRouter)
     path: '/student/my-courses',
     name: 'MyCourses',
     component: () => import(/* webpackChunkName: "Courses" */ '../views/student/MyCourses.vue')
+  },
+  {
+    path: '/student/tasks/:c_id',
+    name: 'StudTasks',
+    component: () => import(/* webpackChunkName: "Courses" */ '../views/student/Tasks.vue')
   }
 ]
 
