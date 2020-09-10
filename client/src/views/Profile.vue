@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <TeacherNavbar v-if="user.role=='teacher'" :t_name="user.name" />
-        <StudentNavbar v-if="user.role=='student'" :s_name="user.name" />
+        <StudentNavbar v-else :s_name="user.name" />
         <v-row justify="center">
             <v-col md="6" sm="6">
                 <v-card>

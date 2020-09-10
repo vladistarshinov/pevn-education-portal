@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-app-bar app dark class="primary" v-if="isAuth">
+        <v-app-bar app dark class="indigo" v-if="isAuth">
             <router-link to="/" class="mr-3"><v-icon>mdi-image-filter-drama</v-icon></router-link>
             <v-toolbar-title>ЭОИС</v-toolbar-title>
             <v-spacer></v-spacer>   
             <v-btn text to="/student/courses">Все курсы</v-btn>   
             <v-btn text to="/student/my-courses">Moи курсы</v-btn> 
-            <v-menu offset-y="">
+            <v-menu offset-y>
                 <template v-slot:activator="{ attrs, on }">
                     <v-btn text v-bind="attrs" v-on="on">{{s_name}}</v-btn>
                 </template>
@@ -29,12 +29,14 @@
     export default {
         data () {
             return {
-                isAuth: false
+                isAuth: false,
+                student: {}
             }
         },
         created () {
             if (sessionStorage.getItem('session') && JSON.parse(sessionStorage.getItem('session')).role === 'student') {
                 this.isAuth = true
+                this.student = JSON.parse(sessionStorage.getItem('session'))
             } else {
                 this.isAuth = false
                 this.$router.push('/auth')

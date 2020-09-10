@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-app-bar app dark class="primary" v-if="isAuth">
+        <v-app-bar app dark class="indigo" v-if="isAuth">
             <router-link to="/" class="mr-3"><v-icon>mdi-image-filter-drama</v-icon></router-link>
             <v-toolbar-title>ЭОИС</v-toolbar-title>
             <v-spacer></v-spacer>   

@@ -6,11 +6,12 @@
         <v-row justify="center">
             <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
                 <v-img
-                    class="orange--text align-end"
+                    class="align-end"
                     src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
                     height="200px"
                 >
-                    <v-card-title>{{ course.c_name }}</v-card-title>
+                    <v-card-title v-if="course.cc_id == null" class="orange--text">{{ course.c_name }}</v-card-title>
+                    <v-card-title v-else class="yellow--text">{{ course.c_name }}</v-card-title>
                     <v-card-subtitle class="white--text">
                         <div><b>Преподаватель: </b>{{ course.t_name }}</div>
                     </v-card-subtitle>
@@ -19,9 +20,12 @@
                     <div><b><u>E-mail:</u></b> {{ course.t_email }}</div>
                     {{ course.c_description }}
                 </v-card-text>
-                <v-card-actions>
+                <v-card-actions v-show="course.cc_id == null">
                     <v-spacer></v-spacer>
-                    <v-btn @click="joinInCourse(course.c_id)" dark absolute right color="orange">Вступить</v-btn>
+                    <v-btn @click="joinInCourse(course.c_id)" dark absolute right color="indigo">Вступить</v-btn>
+                </v-card-actions>
+                <v-card-actions v-show="course.cc_id != null">
+                    <v-btn absolute right outlined color="indigo darken-3">Вы участник курса</v-btn>
                 </v-card-actions>
             </v-card>
         </v-row>  
@@ -52,8 +56,21 @@ import StudentNavbar from '@/components/StudentNavbar'
                 try {
                     const res = await this.axios.get(`/student/courses/${this.student.id}`)
                     this.coursesList = res.data
+                    const newRes = await this.axios.post('/student/my-courses', this.student)
+                    const myCoursesList = newRes.data
+                    for (let i = 0; i <= myCoursesList.length - 1; i++) {
+                        const idx = this.coursesList.findIndex(c => c.c_id == myCoursesList[i].c_id)
+                       // Убираем все курсы, в которые вступил пользователь на странице
+                       // this.coursesList.splice(idx, 1)
+                       // Показываем все курсы, заменяем объекты в массиве для флага "Участник"
+                        this.coursesList.splice(idx, 1, myCoursesList[i])
+                    }
                 } catch (err) {
-
+                    this.alert = {
+                        isShow: true,
+                        type: 'error',
+                        message: err.response.data.msg
+                    }
                 }
             }
         },
