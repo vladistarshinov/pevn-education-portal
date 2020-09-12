@@ -1,16 +1,34 @@
 <template>
     <v-container>
         <TeacherNavbar v-if="user.role=='teacher'" :t_name="user.name" />
-        <StudentNavbar v-else :s_name="user.name" />
+        <StudentNavbar v-if="user.role=='student'" :s_name="user.name" />
         <v-row justify="center">
-            <v-col md="6" sm="6">
+            <v-col md="12" sm="12">
                 <v-card>
                     <v-card-title class="text-uppercase">
-                        {{user.role == 'student' ? 'Студент' : 'Преподаватель'}}
+                        Профиль пользователя
                     </v-card-title>
                     <v-card-text>
-                        <h2>{{user.name}}</h2>
-                        <h4>{{user.email}}</h4>
+                        <v-form class="ma-3">
+                            <v-text-field
+                                readonly
+                                prepend-icon="mdi-account"
+                                label="Имя"
+                                v-model="user.name"
+                            ></v-text-field>
+                            <v-text-field
+                                readonly
+                                prepend-icon="mdi-email"
+                                label="Email"
+                                v-model="user.email"
+                            ></v-text-field>
+                            <v-text-field
+                                readonly
+                                prepend-icon="mdi-clipboard"
+                                label="Статус"
+                                v-model="role"
+                            ></v-text-field>
+                        </v-form>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -29,12 +47,17 @@ export default {
                 name: '',
                 email: '',
                 role: ''
-            }
+            },
+            role: ''
         }
     },
     created () {
         this.user = JSON.parse(sessionStorage.getItem('session'))
-        if (!this.user) {
+        if (this.user.role === 'student') {
+            this.role = 'Студент'
+        } else if (this.user.role === 'teacher') {
+            this.role = 'Преподаватель'
+        } else {
             this.$router.push('/auth')
         }
     },

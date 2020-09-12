@@ -1,5 +1,6 @@
 <template>
-    <v-container class="text-center">
+    <Loader v-if="isLoading" />
+    <v-container v-else class="text-center">
         <TeacherNavbar :t_name="teacher.name" />
         <v-alert class="text-start" text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light">{{course.c_name}}</h1>
@@ -94,6 +95,7 @@
 
 <script>
 import TeacherNavbar from '@/components/TeacherNavbar'
+import Loader from '@/components/Loader'
 export default {
     name: 'Tasks',
     data () {
@@ -117,7 +119,8 @@ export default {
             alert: {
                 isShow: false,
                 message: ''
-            }
+            },
+            isLoading: true
         }
     },
     created () {
@@ -142,6 +145,7 @@ export default {
             .catch (err => {
                 console.log(err)
             })
+            this.isLoading = false
         }
     },
     methods: {
@@ -181,7 +185,8 @@ export default {
         }
     },
     components: {
-        TeacherNavbar
+        TeacherNavbar,
+        Loader
     }
 }
 </script>

@@ -1,12 +1,14 @@
 <template>
-    <v-container class="text-center">
+    <Loader v-if="isLoading" />
+    <v-container v-else class="text-center">
         <StudentNavbar :s_name="student.name" />
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light">{{ course.c_name }}</h1>
         <h2 class="font-weight-thin">{{ course.c_description }}</h2>
         <v-row justify="center">
             <v-col md="12" sm="12">
-                <v-simple-table fixed-headers>
+                <h3 class="font-weight-thin" v-if="!tasksList.length">Заданий пока нет</h3>
+                <v-simple-table fixed-headers v-else>
                     <thead>
                         <tr>
                             <th class="text-center">Название</th>
@@ -29,7 +31,7 @@
                             <td class="text-center" v-else>
                                 <v-icon color="success">mdi-cloud-check</v-icon>
                             </td>
-                            <td class="text-center" color="info" @click.prevent="open(task.d_file)">
+                            <td class="text-center cursor-pointer" @click.prevent="open(task.d_file)">
                                 {{task.d_filename}}
                             </td>
                         </tr>
@@ -63,6 +65,7 @@
 
 <script>
 import StudentNavbar from '@/components/StudentNavbar'
+import Loader from '@/components/Loader'
 export default {
     name: 'StudTasks',
     data () {
@@ -75,7 +78,8 @@ export default {
             alert: {
                 isShow: false,
                 message: ''
-            }
+            },
+            isLoading: true
         }
     },
     async created () {
@@ -89,7 +93,7 @@ export default {
                 const res = await this.axios.get(`/student/tasks/${this.$route.params.c_id}/${this.student.id}`)
                 this.course = res.data.course
                 this.tasksList = res.data.tasks
-                console.log(this.tasksList);
+                this.isLoading = false
             } catch (err) {
                 this.alert = {
                     isShow: true,
@@ -137,7 +141,8 @@ export default {
         }
     },
     components: {
-        StudentNavbar
+        StudentNavbar,
+        Loader
     }
 }
 </script>

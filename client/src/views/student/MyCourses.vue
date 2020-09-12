@@ -1,5 +1,6 @@
 <template>
-    <v-container>
+    <Loader v-if="isLoading" />
+    <v-container v-else>
         <StudentNavbar :s_name="student.name" />
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Мои курсы</h1>
@@ -33,6 +34,7 @@
 
 <script>
 import StudentNavbar from '@/components/StudentNavbar'
+import Loader from '@/components/Loader'
 export default {
     name: 'MyCourses',
     data () {
@@ -42,7 +44,8 @@ export default {
             alert: {
                 isShow: false,
                 message: ''
-            }
+            },
+            isLoading: true
         }
     },
     async created () {
@@ -55,6 +58,7 @@ export default {
                 try {
                     const res = await this.axios.post('/student/my-courses', this.student)
                     this.coursesList = res.data
+                    this.isLoading = false
                 } catch (err) {
                     this.alert = {
                         isShow: true,
@@ -65,7 +69,8 @@ export default {
             }
     },
     components: {
-        StudentNavbar
+        StudentNavbar,
+        Loader
     }
 }
 </script>

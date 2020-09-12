@@ -1,10 +1,11 @@
 <template>
-    <v-container>
+    <Loader v-if="isLoading" />
+    <v-container v-else>
         <StudentNavbar :s_name="student.name" />
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Все курсы</h1>
         <v-row justify="center">
-            <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
+            <v-card class="v-card ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
                 <v-img
                     class="align-end"
                     src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
@@ -25,7 +26,7 @@
                     <v-btn @click="joinInCourse(course.c_id)" dark absolute right color="indigo">Вступить</v-btn>
                 </v-card-actions>
                 <v-card-actions v-show="course.cc_id != null">
-                    <v-btn absolute right outlined color="indigo darken-3">Вы участник курса</v-btn>
+                    <v-btn absolute right dark color="orange darken-3">Вы участник курса</v-btn>
                 </v-card-actions>
             </v-card>
         </v-row>  
@@ -34,6 +35,7 @@
 
 <script>
 import StudentNavbar from '@/components/StudentNavbar'
+import Loader from '@/components/Loader'
     export default {
         name: 'StudCourses',
         data () {
@@ -43,7 +45,8 @@ import StudentNavbar from '@/components/StudentNavbar'
                 alert: {
                     isShow: false,
                     message: ''
-                }
+                },
+                isLoading: true
             }
         },
         async created () {
@@ -60,11 +63,10 @@ import StudentNavbar from '@/components/StudentNavbar'
                     const myCoursesList = newRes.data
                     for (let i = 0; i <= myCoursesList.length - 1; i++) {
                         const idx = this.coursesList.findIndex(c => c.c_id == myCoursesList[i].c_id)
-                       // Убираем все курсы, в которые вступил пользователь на странице
                        // this.coursesList.splice(idx, 1)
-                       // Показываем все курсы, заменяем объекты в массиве для флага "Участник"
                         this.coursesList.splice(idx, 1, myCoursesList[i])
                     }
+                    this.isLoading = false
                 } catch (err) {
                     this.alert = {
                         isShow: true,
@@ -96,7 +98,8 @@ import StudentNavbar from '@/components/StudentNavbar'
             }
         },
         components: {
-            StudentNavbar
+            StudentNavbar,
+            Loader
         }
     }
 </script>
