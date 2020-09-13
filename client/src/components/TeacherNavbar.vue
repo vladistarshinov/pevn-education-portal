@@ -4,7 +4,7 @@
             <router-link to="/" class="mr-3"><v-icon>mdi-image-filter-drama</v-icon></router-link>
             <v-toolbar-title>ЭОИС</v-toolbar-title>
             <v-spacer></v-spacer>   
-            <v-btn text to="/teacher/my-courses">Мои курсы</v-btn>   
+            <v-btn text to="/teacher/my-courses">Мои курсы</v-btn> |   
             <v-menu offset-y="">
                 <template v-slot:activator="{ attrs, on }">
                     <v-btn text v-bind="attrs" v-on="on">{{t_name}}</v-btn>

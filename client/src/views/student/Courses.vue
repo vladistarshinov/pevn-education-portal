@@ -38,6 +38,9 @@ import StudentNavbar from '@/components/StudentNavbar'
 import Loader from '@/components/Loader'
     export default {
         name: 'StudCourses',
+        metaInfo: {
+            title: 'Все курсы | Электронный портал'
+        },
         data () {
             return {
                 student: {},

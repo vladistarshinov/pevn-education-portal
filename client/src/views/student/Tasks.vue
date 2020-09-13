@@ -68,6 +68,9 @@ import StudentNavbar from '@/components/StudentNavbar'
 import Loader from '@/components/Loader'
 export default {
     name: 'StudTasks',
+    metaInfo: {
+        title: 'Задания по курсу | Электронный портал'
+    },
     data () {
         return {
             student: {},

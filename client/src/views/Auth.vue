@@ -38,6 +38,9 @@ import Register from '@/components/Register'
 import Login from '@/components/Login'
 export default {
   name: 'Auth',
+  metaInfo: {
+    title: 'Аутентификация | Электронный портал'
+  },
   components: {
     Register,
     Login

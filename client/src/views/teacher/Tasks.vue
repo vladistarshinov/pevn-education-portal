@@ -98,6 +98,9 @@ import TeacherNavbar from '@/components/TeacherNavbar'
 import Loader from '@/components/Loader'
 export default {
     name: 'Tasks',
+    metaInfo: {
+        title: 'Мои задания | Электронный портал'
+    },
     data () {
         return {
             teacher: {},

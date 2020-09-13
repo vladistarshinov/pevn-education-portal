@@ -41,6 +41,9 @@ import TeacherNavbar from '@/components/TeacherNavbar'
 import StudentNavbar from '@/components/StudentNavbar'
 export default {
     name: 'Profile',
+    metaInfo: {
+        title: 'Профиль | Электронный портал'
+    },
     data () {
         return {
             user: {

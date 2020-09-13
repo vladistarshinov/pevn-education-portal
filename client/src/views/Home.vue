@@ -13,6 +13,9 @@ import StudentNavbar from '@/components/StudentNavbar'
 import Loader from '@/components/Loader'
 export default {
     name: 'Home',
+    metaInfo: {
+        title: 'Главная | Электронный портал'
+    },
     data () {
         return {
             user: {},

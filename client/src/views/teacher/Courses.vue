@@ -89,6 +89,9 @@ import TeacherNavbar from '@/components/TeacherNavbar'
 import Loader from '@/components/Loader'
 export default {
     name: 'Courses',
+    metaInfo: {
+        title: 'Мои курсы | Электронный портал'
+    },
     data () {
         return {
             teacher: {},
