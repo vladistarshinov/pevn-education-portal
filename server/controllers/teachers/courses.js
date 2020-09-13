@@ -21,11 +21,11 @@ courses.getCourses = async (req, res) => {
 };
 
 courses.createCourse = async (req, res) => {
-    const {id, c_name, c_description} = req.body;
+    const {id, c_name, c_description, c_poster} = req.body;
     try {
         await pool.query(
-            'INSERT INTO courses (ct_id, c_name, c_description) VALUES ($1, $2, $3)',
-            [id, c_name, c_description]
+            'INSERT INTO courses (ct_id, c_name, c_description, c_poster) VALUES ($1, $2, $3, $4)',
+            [id, c_name, c_description, c_poster]
         );
         const course = await (await pool.query(`
             SELECT * FROM courses
@@ -67,15 +67,15 @@ courses.readCourse = async (req, res) => {
 
 courses.updateCourse = async (req, res) => {
     const id = req.params.c_id;
-    const {c_name, c_description} = req.body;
+    const {c_name, c_description, c_poster} = req.body;
     try {
         await pool.query(`
-            UPDATE courses SET c_name = $1, c_description = $2
-            WHERE c_id = $3
-        `, [c_name, c_description, id]);
+            UPDATE courses SET c_name = $1, c_description = $2, c_poster = $3
+            WHERE c_id = $4
+        `, [c_name, c_description, c_poster, id]);
         res.status(200).json({
             msg: 'Курс успешно редактирован',
-            course: {c_name, c_description}
+            course: {c_name, c_description, c_poster}
         });
         return;
     } catch (err) {

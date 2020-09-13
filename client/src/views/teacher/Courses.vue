@@ -7,7 +7,7 @@
         <v-row justify="center">
             <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
                 <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                    :src="course.c_poster"
                     height="200px"
                 ></v-img>
                 <v-card-title>{{course.c_name}}</v-card-title>
@@ -24,6 +24,7 @@
                 </v-card-actions>
             </v-card>
         </v-row>
+
         <v-dialog v-model="isShowAddDialog" max-width="450">
             <v-card>
                 <v-card-title>Создать курс</v-card-title>
@@ -41,6 +42,12 @@
                             label="Описание"
                             :rules="descriptionRules"
                         ></v-textarea>
+                        <v-text-field
+                            v-model="addingCourse.c_poster"
+                            prepend-icon="mdi-biohazard"
+                            label="Ссылка на постер"
+                            :rules="posterRules"
+                        ></v-text-field>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click.prevent="isShowAddDialog = !isShowAddDialog">Закрыть</v-btn>
@@ -50,6 +57,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
         <v-dialog v-model="isShowEditDialog" max-width="450">
             <v-card>
                 <v-card-title>Редактировать курс</v-card-title>
@@ -67,6 +75,12 @@
                             label="Описание"
                             :rules="descriptionRules"
                         ></v-textarea>
+                        <v-text-field
+                            v-model="editingCourse.c_poster"
+                            prepend-icon="mdi-biohazard"
+                            label="Ссылка на постер"
+                            :rules="posterRules"
+                        ></v-text-field>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text 
@@ -98,17 +112,22 @@ export default {
             coursesList: [],
             addingCourse: {
                 c_name: '',
-                c_description: ''
+                c_description: '',
+                c_poster: ''
             },
             editingCourse: {
                 c_name: '',
-                c_description: ''
+                c_description: '',
+                c_poster: ''
             },
             nameRules: [
                 v => !!v || 'Введите название курса'
             ],
             descriptionRules: [
                 v => !!v || 'Введите описание курса'
+            ],
+            posterRules: [
+                v => !!v || 'Введите ссылку на постер'
             ],
             isShowAddDialog: false,
             isShowEditDialog: false,

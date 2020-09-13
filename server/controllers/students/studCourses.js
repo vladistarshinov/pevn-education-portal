@@ -6,7 +6,7 @@ studCourses.getCourses = async (req, res) => {
     const id = req.body.id;
     try {
         const courses = await (await pool.query(`
-            SELECT * FROM teacherscourses
+            SELECT * FROM teacherscoursesinfo
             LEFT JOIN (
                 SELECT * FROM studentscourses
                 WHERE sc_id = $1
@@ -29,7 +29,7 @@ studCourses.getMyCourses = async (req, res) => {
     try {
         const courses = await (await pool.query(`
             SELECT * 
-            FROM teacherscourses
+            FROM teacherscoursesinfo
             JOIN (
                 SELECT * 
                 FROM studentscourses
@@ -52,7 +52,7 @@ studCourses.joinCourse = async (req, res) => {
     try {
         const courses = await (await pool.query(`
             SELECT * 
-            FROM teacherscourses
+            FROM teacherscoursesinfo
             JOIN (
                 SELECT * 
                 FROM studentscourses

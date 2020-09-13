@@ -8,11 +8,11 @@
             <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
                 <v-img
                     class="white--text align-end"
-                    src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                    :src="course.c_poster"
                     height="200px"
                 >
-                    <v-card-title>{{ course.c_name }}</v-card-title>
-                    <v-card-subtitle class="white--text">
+                    <v-card-title class="dark-bg"> {{ course.c_name }}</v-card-title>
+                    <v-card-subtitle class="white--text dark-bg">
                         <div><b>Преподаватель: </b>{{ course.t_name }}</div>
                     </v-card-subtitle>
                 </v-img>

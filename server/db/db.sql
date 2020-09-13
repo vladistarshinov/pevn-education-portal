@@ -18,7 +18,8 @@ CREATE TABLE courses (
     c_id SERIAL PRIMARY KEY,
     ct_id INTEGER REFERENCES teachers(t_id),
     c_name TEXT NOT NULL,
-    c_description TEXT NOT NULL
+    c_description TEXT NOT NULL,
+    c_poster TEXT NOT NULL
 );
 
 CREATE TABLE tasks (
@@ -35,6 +36,12 @@ CREATE TABLE studentscourses (
 );
 
 /* CREATE VIEW teacherscourses
+AS
+    SELECT * FROM courses 
+        JOIN
+        (SELECT t_id, t_name, t_email FROM teachers) AS t ON ct_id = t_id; */
+
+/* CREATE VIEW teacherscoursesinfo
 AS
     SELECT * FROM courses 
         JOIN

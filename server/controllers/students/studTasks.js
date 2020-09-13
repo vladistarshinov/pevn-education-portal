@@ -6,7 +6,7 @@ studTasks.getTasks = async (req, res) => {
     const { c_id, id } = req.params;
     try {
         const course = await (await pool.query(`
-            SELECT * FROM teacherscourses
+            SELECT * FROM teacherscoursesinfo
             WHERE c_id = $1
         `, [c_id])).rows[0];
         const tasks = await (await pool.query(`

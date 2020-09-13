@@ -5,15 +5,15 @@
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Все курсы</h1>
         <v-row justify="center">
-            <v-card class="v-card ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
+            <v-card class="v-card ma-3 card-shadow" max-width="275" v-for="course in coursesList" :key="course.c_id">
                 <v-img
                     class="align-end"
-                    src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                    :src="course.c_poster"
                     height="200px"
                 >
-                    <v-card-title v-if="course.cc_id == null" class="orange--text">{{ course.c_name }}</v-card-title>
-                    <v-card-title v-else class="yellow--text">{{ course.c_name }}</v-card-title>
-                    <v-card-subtitle class="white--text">
+                    <v-card-title v-if="course.cc_id == null" class="yellow--text dark-bg">{{ course.c_name }}</v-card-title>
+                    <v-card-title v-else class="white--text dark-bg">{{ course.c_name }}</v-card-title>
+                    <v-card-subtitle class="white--text dark-bg">
                         <div><b>Преподаватель: </b>{{ course.t_name }}</div>
                     </v-card-subtitle>
                 </v-img>
@@ -23,13 +23,14 @@
                 </v-card-text>
                 <v-card-actions v-show="course.cc_id == null">
                     <v-spacer></v-spacer>
-                    <v-btn @click="joinInCourse(course.c_id)" dark absolute right color="indigo">Вступить</v-btn>
+                    <v-btn @click="joinInCourse(course.c_id)" dark color="indigo">Вступить</v-btn>
                 </v-card-actions>
                 <v-card-actions v-show="course.cc_id != null">
-                    <v-btn absolute right dark color="orange darken-3">Вы участник курса</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn dark text color="orange darken-3">Вы участник курса</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-row>  
+        </v-row>
     </v-container>
 </template>
 

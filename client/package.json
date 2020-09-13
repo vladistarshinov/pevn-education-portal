@@ -9,7 +9,6 @@
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
-    "materialize-css": "^1.0.0",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-meta": "^2.4.0",
