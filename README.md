@@ -26,9 +26,10 @@
     * CORS
     * Morgan
     * БД: PostgreSQL
-
+    
   ## Логическая структура БД
-    ![alt text](https://raw.githubusercontent.com/vladistarshinov/pevn-education-portal/master/server/db/database.PNG)
+
+![alt text](https://raw.githubusercontent.com/vladistarshinov/pevn-education-portal/master/server/db/database.PNG)
 
   ## Основные команды
     ```
