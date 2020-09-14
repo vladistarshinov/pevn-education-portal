@@ -19,7 +19,7 @@
     * Vue-meta
     * Material Design Icon
 
-  ## Стек технологий/библиотек (Backend-end)
+  ## Стек технологий/библиотек (Back-end)
     * Node.js
     * Express / Express Validator
     * Cloudinary
@@ -28,7 +28,7 @@
     * БД: PostgreSQL
 
   ## Логическая структура БД
-    ![База данных](server/db/database.PNG)
+    ![База данных](https://github.com/vladistarshinov/pevn-education-portal/raw/master/server/db/database.PNG)
 
     ## Основные команды
     ```
