@@ -28,9 +28,9 @@
     * БД: PostgreSQL
 
   ## Логическая структура БД
-    ![База данных](https://github.com/vladistarshinov/pevn-education-portal/raw/master/server/db/database.PNG)
+    ![](https://github.com/vladistarshinov/pevn-education-portal/raw/master/server/db/database.PNG)
 
-    ## Основные команды
+  ## Основные команды
     ```
     npm run app -- Запустить проект
     ```
