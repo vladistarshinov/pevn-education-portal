@@ -5,7 +5,7 @@
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Все курсы</h1>
         <v-row justify="center">
-            <v-card class="v-card ma-3 card-shadow" max-width="275" v-for="course in coursesList" :key="course.c_id">
+            <v-card class="v-card ma-3 card-shadow" max-width="275" v-for="course in paginatedCoursesList" :key="course.c_id">
                 <v-img
                     class="align-end"
                     :src="course.c_poster"
@@ -31,12 +31,14 @@
                 </v-card-actions>
             </v-card>
         </v-row>
+        <Pagination v-show="pages > 1" :pageSelect="pageSelect" :pages="pages" />
     </v-container>
 </template>
 
 <script>
-import StudentNavbar from '@/components/StudentNavbar'
+import StudentNavbar from '@/components/Navbars/StudentNavbar'
 import Loader from '@/components/Loader'
+import Pagination from '@/components/Pagination'
     export default {
         name: 'StudCourses',
         metaInfo: {
@@ -50,7 +52,9 @@ import Loader from '@/components/Loader'
                     isShow: false,
                     message: ''
                 },
-                isLoading: true
+                isLoading: true,
+                coursesPerPage: 6,
+                pageNumber: 1 
             }
         },
         async created () {
@@ -80,6 +84,16 @@ import Loader from '@/components/Loader'
                 }
             }
         },
+        computed: {
+            pages () {
+                return Math.ceil(this.coursesList.length / this.coursesPerPage)
+            },
+            paginatedCoursesList () {
+                let from = (this.pageNumber - 1) * this.coursesPerPage
+                let to = from + this.coursesPerPage 
+                return this.coursesList.slice(from, to)
+            }
+        },
         methods: {
             async joinInCourse (c_id) {
                 try {
@@ -99,11 +113,15 @@ import Loader from '@/components/Loader'
                         message: err.response.data.msg
                     }
                 }
+            },
+            pageSelect (page) {
+                this.pageNumber = page
             }
         },
         components: {
             StudentNavbar,
-            Loader
+            Loader,
+            Pagination
         }
     }
 </script>

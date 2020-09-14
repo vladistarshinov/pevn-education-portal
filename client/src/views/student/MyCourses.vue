@@ -5,7 +5,7 @@
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Мои курсы</h1>
         <v-row justify="center">
-            <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
+            <v-card class="ma-3" max-width="275" v-for="course in paginatedCoursesList" :key="course.c_id">
                 <v-img
                     class="white--text align-end"
                     :src="course.c_poster"
@@ -29,12 +29,14 @@
                 </v-card-actions>
             </v-card>
         </v-row>
+        <Pagination :pageSelect="pageSelect" :pages="pages" />
     </v-container>
 </template>
 
 <script>
-import StudentNavbar from '@/components/StudentNavbar'
+import StudentNavbar from '@/components/Navbars/StudentNavbar'
 import Loader from '@/components/Loader'
+import Pagination from '@/components/Pagination'
 export default {
     name: 'MyCourses',
     metaInfo: {
@@ -48,7 +50,9 @@ export default {
                 isShow: false,
                 message: ''
             },
-            isLoading: true
+            isLoading: true,
+            coursesPerPage: 3,
+            pageNumber: 1 
         }
     },
     async created () {
@@ -71,9 +75,26 @@ export default {
                 }
             }
     },
+    computed: {
+        pages () {
+            return Math.ceil(this.coursesList.length / this.coursesPerPage)
+        },
+        paginatedCoursesList () {
+            let from = (this.pageNumber - 1) * this.coursesPerPage
+            let to = from + this.coursesPerPage 
+            return this.coursesList.slice(from, to)
+        }
+    },
+    methods: {
+        pageSelect (page) {
+            this.pageNumber = page
+            return this.pageNumber
+        }
+    },
     components: {
         StudentNavbar,
-        Loader
+        Loader,
+        Pagination
     }
 }
 </script>

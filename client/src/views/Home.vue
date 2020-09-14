@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import TeacherNavbar from '@/components/TeacherNavbar'
-import StudentNavbar from '@/components/StudentNavbar'
+import TeacherNavbar from '@/components/Navbars/TeacherNavbar'
+import StudentNavbar from '@/components/Navbars/StudentNavbar'
 import Loader from '@/components/Loader'
 export default {
     name: 'Home',
@@ -38,5 +38,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

@@ -31,5 +31,30 @@ $shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12), 0 1p
 }
 
 .app-loader {
-    margin-top: 10rem;
+    margin-top: 2 * $xl;
+}
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+
+    &__element {
+        padding: 2px 6px;
+        margin-right: 10px;
+        border: 1px solid #e7e7e7;
+        cursor: pointer;
+        transition: .5s all;
+
+        &:hover {
+            background: rgba(#564cd6, .75);
+            color: #fff;
+        }
+
+        &:active {
+            background: #564cd6;
+            border: 3px solid rgb(31, 30, 30);
+        }
+    }
 }

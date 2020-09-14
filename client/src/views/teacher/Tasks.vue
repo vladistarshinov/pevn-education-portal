@@ -7,7 +7,8 @@
         <h2 class="font-weight-thin">{{course.c_description}}</h2>
         <v-row justify="center">
             <v-col md="12" sm="12">
-                <v-simple-table fixed-headers>
+                <h3 class="font-weight-thin" v-if="!tasksList.length">Заданий пока нет. Добавьте первое</h3>
+                <v-simple-table fixed-headers v-else>
                     <thead>
                         <tr>
                             <th class="text-center">Название</th>
@@ -17,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="task in tasksList" :key="task.h_id">
+                        <tr v-for="task in paginatedTasksList" :key="task.h_id">
                             <td class="text-center">{{ task.h_name }}</td>
                             <td class="text-center">{{ task.h_description }}</td>
                             <td class="text-center">
@@ -41,13 +42,13 @@
                     <v-form ref="addtaskForm" class="ma-3" @submit.prevent="createTask()">
                         <v-text-field 
                             v-model="addingTask.h_name"
-                            prepend-icon="mdi-biohazard" 
+                            prepend-icon="mdi-rhombus-split-outline" 
                             label="Название задания"
                             :rules="nameRules"
                         ></v-text-field>
                         <v-textarea
                             v-model="addingTask.h_description"
-                            prepend-icon="mdi-bike"
+                            prepend-icon="mdi-book-open-outline"
                             label="Описание задания"
                             :rules="descriptionRules"
                         ></v-textarea>
@@ -77,7 +78,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="delivery in deliveriesList" :key="delivery.d_id" class="text-center">
+                    <h3 class="mt-5 mb-5 font-weight-light text-center" v-if="!deliveriesList.length">Нет присланных для проверки заданий</h3>
+                    <tr v-else v-for="delivery in deliveriesList" :key="delivery.d_id" class="text-center">
                         <td>{{ delivery.s_name }}</td>
                         <td>
                             <a @click="open(delivery.d_file)">{{delivery.d_filename}}</a>
@@ -90,12 +92,14 @@
         <v-btn @click.prevent="isShowAddDialog = true" color="deep-orange" large right fixed bottom fab dark>
             <v-icon>mdi-plus</v-icon>
         </v-btn>  
+        <Pagination v-show="pages > 1" :pageSelect="pageSelect" :pages="pages" />
     </v-container>
 </template>
 
 <script>
-import TeacherNavbar from '@/components/TeacherNavbar'
+import TeacherNavbar from '@/components/Navbars/TeacherNavbar'
 import Loader from '@/components/Loader'
+import Pagination from '@/components/Pagination'
 export default {
     name: 'Tasks',
     metaInfo: {
@@ -123,7 +127,9 @@ export default {
                 isShow: false,
                 message: ''
             },
-            isLoading: true
+            isLoading: true,
+            tasksPerPage: 6,
+            pageNumber: 1 
         }
     },
     created () {
@@ -149,6 +155,16 @@ export default {
                 console.log(err)
             })
             this.isLoading = false
+        }
+    },
+    computed: {
+        pages () {
+            return Math.ceil(this.tasksList.length / this.tasksPerPage)
+        },
+        paginatedTasksList () {
+            let from = (this.pageNumber - 1) * this.tasksPerPage
+            let to = from + this.tasksPerPage 
+            return this.tasksList.slice(from, to)
         }
     },
     methods: {
@@ -185,11 +201,15 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+        },
+        pageSelect (page) {
+            this.pageNumber = page
         }
     },
     components: {
         TeacherNavbar,
-        Loader
+        Loader,
+        Pagination
     }
 }
 </script>

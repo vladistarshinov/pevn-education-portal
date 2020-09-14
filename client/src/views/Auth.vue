@@ -34,8 +34,8 @@
 
 <script>
 // @ is an alias to /src
-import Register from '@/components/Register'
-import Login from '@/components/Login'
+import Register from '@/components/Auth/Register'
+import Login from '@/components/Auth/Login'
 export default {
   name: 'Auth',
   metaInfo: {

@@ -5,7 +5,7 @@
         <v-alert text v-model="alert.isShow" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
         <h1 class="font-weight-light text-center">Мои курсы</h1>
         <v-row justify="center">
-            <v-card class="ma-3" max-width="275" v-for="course in coursesList" :key="course.c_id">
+            <v-card class="ma-3" max-width="275" v-for="course in paginatedCoursesList" :key="course.c_id">
                 <v-img
                     :src="course.c_poster"
                     height="200px"
@@ -32,19 +32,19 @@
                     <v-form class="ma-3" ref="addForm" @submit.prevent="addCourse()">
                         <v-text-field
                             v-model="addingCourse.c_name"
-                            prepend-icon="mdi-biohazard"
+                            prepend-icon="mdi-label-outline"
                             label="Название"
                             :rules="nameRules"
                         ></v-text-field>
                         <v-textarea
                             v-model="addingCourse.c_description"
-                            prepend-icon="mdi-bike"
+                            prepend-icon="mdi-book-open-outline"
                             label="Описание"
                             :rules="descriptionRules"
                         ></v-textarea>
                         <v-text-field
                             v-model="addingCourse.c_poster"
-                            prepend-icon="mdi-biohazard"
+                            prepend-icon="mdi-link"
                             label="Ссылка на постер"
                             :rules="posterRules"
                         ></v-text-field>
@@ -65,19 +65,19 @@
                     <v-form class="ma-3" ref="editForm" @submit.prevent="editCourse()">
                         <v-text-field
                             v-model="editingCourse.c_name"
-                            prepend-icon="mdi-biohazard"
+                            prepend-icon="mdi-label-outline"
                             label="Название"
                             :rules="nameRules"
                         ></v-text-field>
                         <v-textarea
                             v-model="editingCourse.c_description"
-                            prepend-icon="mdi-bike"
+                            prepend-icon="mdi-book-open-outline"
                             label="Описание"
                             :rules="descriptionRules"
                         ></v-textarea>
                         <v-text-field
                             v-model="editingCourse.c_poster"
-                            prepend-icon="mdi-biohazard"
+                            prepend-icon="mdi-link"
                             label="Ссылка на постер"
                             :rules="posterRules"
                         ></v-text-field>
@@ -95,12 +95,14 @@
         <v-btn @click.prevent="isShowAddDialog = true" color="red" large right fixed bottom fab dark>
             <v-icon>mdi-plus</v-icon>
         </v-btn>
+        <Pagination v-show="pages > 1 || pageNumber > 1" :pageSelect="pageSelect" :pages="pages" />
     </v-container>
 </template>
 
 <script>
-import TeacherNavbar from '@/components/TeacherNavbar'
+import TeacherNavbar from '@/components/Navbars/TeacherNavbar'
 import Loader from '@/components/Loader'
+import Pagination from '@/components/Pagination'
 export default {
     name: 'Courses',
     metaInfo: {
@@ -135,7 +137,9 @@ export default {
                 isShow: false,
                 message: ''
             },
-            isLoading: true
+            isLoading: true,
+            coursesPerPage: 3,
+            pageNumber: 1 
         }
     },
     async created () {
@@ -156,6 +160,16 @@ export default {
                     message: err.response.data.msg
                 }
             }
+        }
+    },
+    computed: {
+        pages () {
+            return Math.ceil(this.coursesList.length / this.coursesPerPage)
+        },
+        paginatedCoursesList () {
+            let from = (this.pageNumber - 1) * this.coursesPerPage
+            let to = from + this.coursesPerPage 
+            return this.coursesList.slice(from, to)
         }
     },
     methods: {
@@ -236,11 +250,15 @@ export default {
                     message: err.response.data.msg
                 }
             }
+        },
+        pageSelect (page) {
+            this.pageNumber = page
         }
     },
     components: {
         TeacherNavbar,
-        Loader
+        Loader,
+        Pagination
     }
 }
 </script>

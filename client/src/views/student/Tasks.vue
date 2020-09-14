@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="task in tasksList" :key="task.h_id">
+                        <tr v-for="task in paginatedTasksList" :key="task.h_id">
                             <td class="text-center">{{ task.h_name }}</td>
                             <td class="text-center">{{ task.h_description }}</td>
                             <td class="text-center">
@@ -60,12 +60,14 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+        <Pagination v-show="pages > 1" :pageSelect="pageSelect" :pages="pages" />
     </v-container>
 </template>
 
 <script>
-import StudentNavbar from '@/components/StudentNavbar'
+import StudentNavbar from '@/components/Navbars/StudentNavbar'
 import Loader from '@/components/Loader'
+import Pagination from '@/components/Pagination'
 export default {
     name: 'StudTasks',
     metaInfo: {
@@ -82,7 +84,9 @@ export default {
                 isShow: false,
                 message: ''
             },
-            isLoading: true
+            isLoading: true,
+            tasksPerPage: 6,
+            pageNumber: 1 
         }
     },
     async created () {
@@ -104,6 +108,16 @@ export default {
                     message: err.response.data.msg
                 }
             }
+        }
+    },
+    computed: {
+        pages () {
+            return Math.ceil(this.tasksList.length / this.tasksPerPage)
+        },
+        paginatedTasksList () {
+            let from = (this.pageNumber - 1) * this.tasksPerPage
+            let to = from + this.tasksPerPage 
+            return this.tasksList.slice(from, to)
         }
     },
     methods: {
@@ -141,11 +155,15 @@ export default {
                     }
                 }
             }
+        },
+        pageSelect (page) {
+            this.pageNumber = page
         }
     },
     components: {
         StudentNavbar,
-        Loader
+        Loader,
+        Pagination
     }
 }
 </script>
