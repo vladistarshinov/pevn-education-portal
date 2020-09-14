@@ -28,7 +28,7 @@
     * БД: PostgreSQL
 
   ## Логическая структура БД
-    ![](https://github.com/vladistarshinov/pevn-education-portal/raw/master/server/db/database.PNG)
+    ![alt text](https://raw.githubusercontent.com/vladistarshinov/pevn-education-portal/master/server/db/database.PNG)
 
   ## Основные команды
     ```
